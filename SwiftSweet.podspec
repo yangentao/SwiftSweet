@@ -9,6 +9,8 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '12.0'
   s.osx.deployment_target = '10.12'
+  s.platform = [:osx, :ios]
+  s.swift_versions = ["5.0", "5.1", "5.2", "5.3"]
   s.source_files = 'SwiftSweet/Classes/**/*'
   
 end
