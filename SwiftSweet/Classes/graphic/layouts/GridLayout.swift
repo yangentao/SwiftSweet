@@ -131,7 +131,7 @@ public class GridLayout: BaseLayout {
         return self
     }
 
-    var fixedHeight: CGFloat {
+    public var fixedHeight: CGFloat {
         var fh: CGFloat = paddings.top + paddings.bottom
         let childViews = self.subviews
         if childViews.isEmpty {

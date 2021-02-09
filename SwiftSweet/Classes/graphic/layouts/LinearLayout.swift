@@ -82,6 +82,10 @@ public class LinearParams: Applyable {
 
     public var margins: Edge = Edge()
 
+    public init() {
+
+    }
+
 
 }
 
