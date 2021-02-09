@@ -1,0 +1,6 @@
+framework module SwiftSweet {
+  umbrella header "SwiftSweet-umbrella.h"
+
+  export *
+  module * { export * }
+}

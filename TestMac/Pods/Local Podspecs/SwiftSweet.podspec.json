@@ -1,0 +1,22 @@
+{
+  "name": "SwiftSweet",
+  "version": "0.1.0",
+  "summary": "SwiftSweet is a library writen by entaoyang",
+  "homepage": "https://github.com/yangentao/SwiftSweet",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "yangentao": "entaoyang@163.com"
+  },
+  "source": {
+    "git": "https://github.com/yangentao/SwiftSweet.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "12.0",
+    "osx": "10.12"
+  },
+  "source_files": "SwiftSweet/Classes/**/*"
+}
