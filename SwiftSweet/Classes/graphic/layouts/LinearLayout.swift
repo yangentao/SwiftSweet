@@ -415,7 +415,8 @@ public class LinearLayout: BaseLayout {
         }
         var fromX = bounds.minX + padding.left
         for cell in cells {
-            cell.x = fromX + cell.param.margins.left
+            fromX += cell.param.margins.left
+            cell.x = fromX
             cell.width = max(0, cell.width)
             fromX += cell.width + cell.param.margins.right
         }
@@ -426,7 +427,7 @@ public class LinearLayout: BaseLayout {
         logd("HOR: ", bounds)
         for cell in cells {
             let rect = cell.rect
-            logd("Cell: ", rect, rect.minX, rect.maxX )
+            logd("Cell: ", rect, rect.minX, rect.maxX)
             let p = cell.param
             var gX = p.gravityX
             if gX == .none {
@@ -595,6 +596,11 @@ public class LinearLayout: BaseLayout {
     }
 
     private func calcCellRectVer(_ cells: [LinearCell]) -> CGFloat {
+        logd("Bounds.Height: ", self.bounds.height)
+        for c in cells {
+            logd("Height: ", c.height)
+        }
+
 
         let X = bounds.minX + padding.left
         let W = bounds.width - padding.left - padding.right
@@ -605,14 +611,16 @@ public class LinearLayout: BaseLayout {
         }
         var fromY = bounds.minY + padding.top
         for cell in cells {
-            cell.y = fromY + cell.param.margins.top
+            fromY += cell.param.margins.top
+            cell.y = fromY
             cell.height = max(0, cell.height)
             fromY += cell.height + cell.param.margins.bottom
         }
-        return fromY
+        return fromY + padding.bottom
     }
 
     private func layoutChildrenVertical(_ cells: [LinearCell]) {
+
         for cell in cells {
             let rect = cell.rect
             let p = cell.param

@@ -32,21 +32,21 @@ class ViewController: NSViewController {
         }
 
 //        let ll = LinearLayout(NSLayoutConstraint.Orientation.vertical)
-        view += LinearLayout(.vertical).apply { ll in
+        view += LinearLayout(.horizontal).apply { ll in
             ll.constraints { c in
                 c.centerParent()
-                c.widthParent(multi: 1, constant: -20)
-                c.heightParent(multi: 1, constant: -20)
+                c.widthParent(multi: 1, constant: -10)
+                c.heightParent(multi: 1, constant: -10)
             }
             ll.backColor(.green)
-            for i in 1 ... 10 {
+            for i in 1 ... 20 {
                 ll += label(i).linearParams { p in
-                    p.width = 0
-                    p.height = 0
+//                    p.width = 0
+//                    p.height = 0
                     p.weight = 1
-                    p.gravityX = .fill
-                    p.gravityY = .fill
-                    p.margins.ver(10).hor(10)
+//                    p.gravityX = .fill
+//                    p.gravityY = .fill
+                    p.margins.ver(5).hor(5)
                 }
             }
 
