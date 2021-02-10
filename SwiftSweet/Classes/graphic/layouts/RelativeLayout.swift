@@ -189,6 +189,7 @@ public class RelativeParamsBuilder {
 }
 
 public extension RelativeParamsBuilder {
+    #if os(iOS)
     @discardableResult
     func widthWrap(_ minWidth: CGFloat = 0) -> Self {
         let a = RC(prop: .width).constant(WrapContent)
@@ -204,6 +205,7 @@ public extension RelativeParamsBuilder {
         items += a
         return self
     }
+    #endif
 
     @discardableResult
     func eq(_ prop: RelativeProp, viewName: String, prop2: RelativeProp?, multi: CGFloat = 1, constant: CGFloat = 0) -> Self {
@@ -458,6 +460,7 @@ public class RelativeLayout: BaseLayout {
         for c in allCond {
             if c.viewOther == nil {
                 switch c.constant {
+                    #if os(iOS)
                 case WrapContent:
                     let sz = c.view!.fitSize(self.bounds.size)
                     if c.prop == .width {
@@ -467,7 +470,7 @@ public class RelativeLayout: BaseLayout {
                     } else {
                         fatalError("WrapContent ONLY used on width or height property")
                     }
-                    break
+                    #endif
                 case MatchParent:
                     if c.prop == .width || c.prop == .height {
                         c.tempValue = queryParentProp(c.prop)

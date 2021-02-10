@@ -25,35 +25,37 @@ class ViewController: NSViewController {
         }
 
 
-        let lb = NSTextField(labelWithString: "Hello")
-        lb.wantsLayer = true
-        lb.backgroundColor = .red
-        lb.textColor = .green
-        lb.layer?.backgroundColor = NSColor.red.cgColor
-        lb.attributedStringValue = styledText(text: "Hello", key: .foregroundColor, value: Color.red)
+        func label(_ n: Int) -> NSTextField {
+            let lb = NSTextField(labelWithString: "Hello \(n)")
+            lb.backColor(.red)
+            return lb
+        }
 
 //        let ll = LinearLayout(NSLayoutConstraint.Orientation.vertical)
         view += LinearLayout(.vertical).apply { ll in
             ll.constraints { c in
                 c.centerParent()
-                c.width(400)
-                c.height(300)
+                c.widthParent(multi: 1, constant: -10)
+                c.heightParent(multi: 1, constant: -10)
             }
-            ll.wantsLayer = true
-            ll.layer?.backgroundColor = NSColor.green.cgColor
-            for i in 0...4 {
-                let lb = NSTextField(labelWithString: "Hello \(i)")
-                lb.wantsLayer = true
-                lb.layer?.backgroundColor = NSColor.red.cgColor
-                lb.textColor = .green
-                lb.attributedStringValue = styleText
-//                lb.attributedStringValue = styledText(text: "Hello", key: .foregroundColor, value: Color.blue)
-                ll += lb.linearParams { p in
-                    p.width = MatchParent
-                    p.weight = 1
-                    p.margins.ver(1).hor(5)
-                }
+            ll.backColor(.green)
+            ll += label(0).linearParams { p in
+                p.width = 100
+                p.height = 0
+                p.weight = 1
+                p.gravityX = .fill
+                p.gravityY = .fill
+                p.margins.ver(1).hor(5)
             }
+            ll += label(1).linearParams { p in
+                p.width = 100
+                p.height = 50
+                p.weight = 1
+                p.gravityX = .right
+                p.gravityY = .fill
+                p.margins.ver(1).hor(5)
+            }
+
         }
 
 //        view += lb.constraints { c in

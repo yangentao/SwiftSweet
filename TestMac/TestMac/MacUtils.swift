@@ -7,6 +7,7 @@ import AppKit
 
 public extension NSView {
 
+    @discardableResult
     func backColor(_ c: NSColor) -> Self {
         self.wantsLayer = true
         self.layer?.backgroundColor = c.cgColor
