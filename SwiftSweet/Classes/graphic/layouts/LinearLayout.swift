@@ -240,13 +240,13 @@ public class LinearLayout: BaseLayout {
         }
     }
     //view gravity in cell
-    public var defaultGravityX: GravityX = .none {
+    public var defaultGravityX: GravityX = .fill {
         didSet {
             postLayout()
         }
     }
     //view gravity in cell
-    public var defaultGravityY: GravityY = .none {
+    public var defaultGravityY: GravityY = .fill {
         didSet {
             postLayout()
         }
@@ -302,17 +302,25 @@ public class LinearLayout: BaseLayout {
         if axis == .vertical {
 
             calcSizesVertical(sz, cells)
-            let maxY = calcCellRect(cells)
+            let maxY = calcCellRectVer(cells)
             layoutChildrenVertical(cells)
             contentSize = CGSize(width: tmpBounds.size.width, height: max(0, maxY - tmpBounds.minY))
         } else {
             calcSizesHor(sz, cells)
-            let maxX = layoutChildrenHor(cells)
+            let maxX = calcCellRectHor(cells)
+            layoutChildrenHor(cells)
             contentSize = CGSize(width: max(0, maxX - tmpBounds.minX), height: tmpBounds.size.height)
         }
     }
 
     private func calcSizesHor(_ size: CGSize, _ cells: [LinearCell]) {
+        #if os(iOS)
+        for cell in cells {
+            if cell.param.width == WrapContent || cell.param.height == WrapContent {
+                cell.wrapSize = cell.view.fitSize(size)
+            }
+        }
+        #endif
         var avaliableWidth = size.width
         var weightSum: CGFloat = 0
         var matchSum = 0
@@ -324,7 +332,6 @@ public class LinearLayout: BaseLayout {
             avaliableWidth -= cell.param.margins.left + cell.param.margins.right
             if cell.param.weight > 0 {
                 weightSum += cell.param.weight
-                avaliableWidth -= cell.param.minWidth
                 weightList += cell
                 if cell.param.maxWidth > 0 {
                     assert(cell.param.maxWidth >= cell.param.minWidth)
@@ -333,7 +340,6 @@ public class LinearLayout: BaseLayout {
             }
             if cell.param.width == MatchParent {
                 matchSum += 1
-                avaliableWidth -= cell.param.minWidth
                 matchList += cell
                 if cell.param.maxWidth > 0 {
                     assert(cell.param.maxWidth >= cell.param.minWidth)
@@ -348,8 +354,7 @@ public class LinearLayout: BaseLayout {
             }
             #if os(iOS)
             if cell.param.width == WrapContent {
-                let sz = cell.view.fitSize(size)
-                cell.width = max(0, sz.width)
+                cell.width = cell.wrapSize.width
                 avaliableWidth -= cell.width
                 continue
             }
@@ -361,83 +366,138 @@ public class LinearLayout: BaseLayout {
         if matchSum > 0 && weightSum > 0 {
             fatalError("LinearParam error , Can not use MatchParent and weight in same time!")
         }
-        if matchSum > 0 {
-            let ls = matchList.sortedAsc {
-                $0.param.maxWidth
+
+        if weightSum > 0 {
+            let ls = weightList.sortedDesc {
+                $0.param.minWidth / $0.param.weight
             }
-            for cell in ls {
+            for cell: LinearCell in ls {
+                let p: LinearParams = cell.param
+                let w = max(0, avaliableWidth) / weightSum
+                let WW = w * p.weight
+                if WW < p.minWidth {
+                    cell.width = p.minWidth
+                } else if p.maxWidth > 0 && p.maxWidth < WW {
+                    cell.width = p.maxWidth
+                } else {
+                    cell.width = WW
+                }
+                avaliableWidth -= cell.width
+                weightSum -= p.weight
+            }
+        } else if matchSum > 0 {
+            let ls = matchList.sortedDesc {
+                $0.param.minWidth
+            }
+            for cell: LinearCell in ls {
                 let w = max(0, avaliableWidth) / matchSum
-                if cell.param.maxWidth > 0 && cell.param.maxWidth < w {
+                if w < cell.param.minWidth {
+                    cell.width = cell.param.minWidth
+                } else if cell.param.maxWidth > 0 && cell.param.maxWidth < w {
                     cell.width = cell.param.maxWidth
                 } else {
-                    cell.width = cell.param.minWidth + w
+                    cell.width = w
                 }
                 avaliableWidth -= cell.width
                 matchSum -= 1
             }
         }
-        if weightSum > 0 {
-            let ls = weightList.sortedAsc {
-                $0.param.maxWidth / $0.param.weight
-            }
-            for cell in ls {
-                let w = max(0, avaliableWidth) / weightSum
-                let WW = w * cell.param.weight
-                if cell.param.maxWidth > 0 && cell.param.maxWidth < WW {
-                    cell.width = cell.param.maxWidth
-                } else {
-                    cell.width = cell.param.minHeight + WW
-                }
-                avaliableWidth -= cell.width
-                weightSum -= cell.param.weight
-            }
-        }
     }
 
-    private func layoutChildrenHor(_ cells: [LinearCell]) -> CGFloat {
-        var fromX = bounds.minX + padding.left
+    private func calcCellRectHor(_ cells: [LinearCell]) -> CGFloat {
 
+        let Y = bounds.minY + padding.top
+        let H = bounds.height - padding.top - padding.bottom
         for cell in cells {
-            let param = cell.param
-            let HH = bounds.size.height - padding.top - padding.bottom - param.margins.top - param.margins.bottom
-            var h: CGFloat = 0
-            var gY = param.gravityY
+            let m = cell.param.margins
+            cell.y = Y + m.top
+            cell.height = max(0, H - m.top - m.bottom)
+        }
+        var fromX = bounds.minX + padding.left
+        for cell in cells {
+            cell.x = fromX + cell.param.margins.left
+            cell.width = max(0, cell.width)
+            fromX += cell.width + cell.param.margins.right
+        }
+        return fromX + padding.right
+    }
+
+    private func layoutChildrenHor(_ cells: [LinearCell]) {
+        logd("HOR: ", bounds)
+        for cell in cells {
+            let rect = cell.rect
+            logd("Cell: ", rect, rect.minX, rect.maxX )
+            let p = cell.param
+            var gX = p.gravityX
+            if gX == .none {
+                gX = defaultGravityX
+            }
+            var gY = p.gravityY
             if gY == .none {
                 gY = defaultGravityY
             }
-            if param.height == MatchParent || gY == .fill {
-                h = HH
-            } else if param.height > 0 {
-                h = param.height
+            var x: CGFloat = rect.minX
+            var y: CGFloat = rect.minY
+            var w: CGFloat = rect.width
+            var h: CGFloat = rect.height
+
+            if p.height > 0 {
+                h = p.height
+            } else if gY == .fill {
+                h = rect.height
             } else {
-                #if os(iOS)
-                if param.height == WrapContent {
-                    let sz = cell.view.fitSize(Size(width: cell.width, height: HH))
-                    h = sz.height
+                if p.height == MatchParent {
+                    h = rect.height
+                } else {
+                    #if os(iOS)
+                    if p.height == WrapContent {
+                        h = cell.wrapSize.height
+                    }
+                    #endif
                 }
-                #endif
             }
-            h = max(0, h)
-            cell.height = min(h, HH)
 
             switch gY {
             case .none, .top, .fill:
-                cell.y = bounds.minY + padding.top + param.margins.top
-            case .bottom:
-                cell.y = bounds.maxY - padding.bottom - param.margins.bottom - cell.height
+                y = rect.minY
             case .center:
-                cell.y = bounds.center.y - cell.height / 2
+                y = rect.center.y - h / 2
+            case .bottom:
+                y = rect.maxY - h
             }
-            cell.x = fromX + cell.param.margins.left
-            let r = cell.rect
+
+
+            if p.width > 0 {
+                w = p.width
+            } else if gX == .fill {
+                w = rect.width
+            } else {
+                if p.width == MatchParent {
+                    w = rect.width
+                } else {
+                    #if os(iOS)
+                    if p.width == WrapContent {
+                        w = cell.wrapSize.width
+                    }
+                    #endif
+                }
+            }
+
+            switch gX {
+            case .none, .left, .fill:
+                x = rect.minX
+            case .center:
+                x = rect.center.x - w / 2
+            case .right:
+                x = rect.maxX - w
+            }
+
+            let r = Rect(x: x, y: y, width: w, height: h)
             if cell.view.frame != r {
                 cell.view.customLayoutConstraintParams.update(r)
             }
-            fromX = r.maxX + cell.param.margins.right
         }
 
-        fromX += padding.right
-        return fromX
     }
 
     //=========
@@ -502,17 +562,18 @@ public class LinearLayout: BaseLayout {
                 $0.param.minHeight / $0.param.weight
             }
             for cell: LinearCell in ls {
+                let p: LinearParams = cell.param
                 let h = max(0, avaliableHeight) / weightSum
-                let HH = h * cell.param.weight
-                if HH < cell.param.minHeight {
-                    cell.height = cell.param.minHeight
-                } else if cell.param.maxHeight > 0 && cell.param.maxHeight < HH {
-                    cell.height = cell.param.maxHeight
+                let HH = h * p.weight
+                if HH < p.minHeight {
+                    cell.height = p.minHeight
+                } else if p.maxHeight > 0 && p.maxHeight < HH {
+                    cell.height = p.maxHeight
                 } else {
                     cell.height = HH
                 }
                 avaliableHeight -= cell.height
-                weightSum -= cell.param.weight
+                weightSum -= p.weight
             }
         } else if matchSum > 0 {
             let ls = matchList.sortedDesc {
@@ -533,7 +594,7 @@ public class LinearLayout: BaseLayout {
         }
     }
 
-    private func calcCellRect(_ cells: [LinearCell]) -> CGFloat {
+    private func calcCellRectVer(_ cells: [LinearCell]) -> CGFloat {
 
         let X = bounds.minX + padding.left
         let W = bounds.width - padding.left - padding.right
@@ -547,10 +608,6 @@ public class LinearLayout: BaseLayout {
             cell.y = fromY + cell.param.margins.top
             cell.height = max(0, cell.height)
             fromY += cell.height + cell.param.margins.bottom
-        }
-        logd("Cells:")
-        for cell in cells {
-            logd(cell.rect, cell.rect.minY, cell.rect.maxY)
         }
         return fromY
     }
@@ -572,12 +629,12 @@ public class LinearLayout: BaseLayout {
             var w: CGFloat = rect.width
             var h: CGFloat = rect.height
 
-            if gX == .fill {
+            if p.width > 0 {
+                w = p.width
+            } else if gX == .fill {
                 w = rect.width
             } else {
-                if p.width > 0 {
-                    w = p.width
-                } else if p.width == MatchParent {
+                if p.width == MatchParent {
                     w = rect.width
                 } else {
                     #if os(iOS)
@@ -597,12 +654,12 @@ public class LinearLayout: BaseLayout {
                 x = rect.maxX - w
             }
 
-            if gY == .fill {
+            if p.height > 0 {
+                h = p.height
+            } else if gY == .fill {
                 h = rect.height
             } else {
-                if p.height > 0 {
-                    h = p.height
-                } else if p.height == MatchParent {
+                if p.height == MatchParent {
                     h = rect.height
                 } else {
                     #if os(iOS)
@@ -624,7 +681,6 @@ public class LinearLayout: BaseLayout {
 
             let r = Rect(x: x, y: y, width: w, height: h)
             if cell.view.frame != r {
-                logd("Rect:", r)
                 cell.view.customLayoutConstraintParams.update(r)
             }
         }
