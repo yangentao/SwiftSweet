@@ -53,7 +53,6 @@
 				13C5059D786274F5DA388FE4 /* Pods-TestMac.debug.xcconfig */,
 				0681464E182C6AD1C67FF76E /* Pods-TestMac.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -115,12 +114,16 @@
 /* Begin PBXProject section */
 		E11E1853BBD034D55684644E /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = E11E1C0E1F4D209FE2031451 /* Build configuration list for PBXProject "TestMac" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
+				Base,
 			);
 			mainGroup = E11E127F881F629CF8ED0BF4;
 			productRefGroup = E11E102C805F4DEA7BA92647 /* Products */;
@@ -353,8 +356,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
@@ -368,6 +370,7 @@
 				E11E14AED532AD70E2DBF618 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E11E1C0E1F4D209FE2031451 /* Build configuration list for PBXProject "TestMac" */ = {
 			isa = XCConfigurationList;

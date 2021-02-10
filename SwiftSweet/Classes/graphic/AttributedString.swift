@@ -12,10 +12,26 @@ import UIKit
 import AppKit
 #endif
 
-public class StyledText {
+public func styledText(_ block: (StyledText) -> Void) -> NSAttributedString {
+    let a = StyledText()
+    block(a)
+    return a.value
+}
+
+public func styledText(text: String, key: NSAttributedString.Key, value: Any) -> NSAttributedString {
+    let ss = NSMutableAttributedString(string: text)
+    ss.setAttributes([key: value], range: NSRange(location: 0, length: text.count))
+    return ss
+}
+
+public class StyledText: Applyable {
     private var buffer: String = ""
     private var map: [NSRange: MyMap<NSAttributedString.Key, Any>] = [:]
     private var paragraph: NSMutableParagraphStyle? = nil
+
+    public init() {
+        buffer.reserveCapacity(128)
+    }
 
     public var count: Int {
         return buffer.count
@@ -60,12 +76,19 @@ public extension StyledText {
         append(text, MyMap(attrs))
     }
 
+    @discardableResult
     func append(_ text: String, block: (TextStyleBuilder) -> Void) -> Self {
         let b = TextStyleBuilder()
         block(b)
         return append(text, b.map)
     }
 
+    @discardableResult
+    func append(_ text: String, _ attr: NSAttributedString.Key, _ value: Any) -> Self {
+        return append(text, [attr: value])
+    }
+
+    @discardableResult
     func append(_ text: String) -> TextStyleBuilder {
         let b = TextStyleBuilder()
         append(text, b.map)

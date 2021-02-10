@@ -18,15 +18,23 @@ class ViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let styleText = styledText {
+            $0.append("a", .foregroundColor, Color.blue)
+            $0.append("b", .backgroundColor, Color.white)
+        }
+
+
         let lb = NSTextField(labelWithString: "Hello")
         lb.wantsLayer = true
         lb.backgroundColor = .red
         lb.textColor = .green
         lb.layer?.backgroundColor = NSColor.red.cgColor
+        lb.attributedStringValue = styledText(text: "Hello", key: .foregroundColor, value: Color.red)
 
 //        let ll = LinearLayout(NSLayoutConstraint.Orientation.vertical)
         view += LinearLayout(.vertical).apply { ll in
-            ll.constraints{ c in
+            ll.constraints { c in
                 c.centerParent()
                 c.width(400)
                 c.height(300)
@@ -36,10 +44,11 @@ class ViewController: NSViewController {
             for i in 0...4 {
                 let lb = NSTextField(labelWithString: "Hello \(i)")
                 lb.wantsLayer = true
-                lb.backgroundColor = .red
-                lb.textColor = .green
                 lb.layer?.backgroundColor = NSColor.red.cgColor
-                ll += lb.linearParams{ p in
+                lb.textColor = .green
+                lb.attributedStringValue = styleText
+//                lb.attributedStringValue = styledText(text: "Hello", key: .foregroundColor, value: Color.blue)
+                ll += lb.linearParams { p in
                     p.width = MatchParent
                     p.weight = 1
                     p.margins.ver(1).hor(5)
