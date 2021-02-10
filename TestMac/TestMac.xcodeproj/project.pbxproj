@@ -11,6 +11,7 @@
 		E11E1623E634A58075D5FDC2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11E181CEAEF36F5E1765B68 /* AppDelegate.swift */; };
 		E11E1A92B7ADB57B0DB1E9C7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E11E1685BADB9612347DF9C8 /* Main.storyboard */; };
 		E11E1BF4B82C433C3F324936 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11E14FA3D1BA73F0B19C73D /* ViewController.swift */; };
+		E11E1E557C212941D06209C6 /* MacUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11E17B7BDF54458D2277221 /* MacUtils.swift */; };
 		E996AC4E5D3383D822453FDA /* Pods_TestMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A58425B804181AEBD10863 /* Pods_TestMac.framework */; };
 /* End PBXBuildFile section */
 
@@ -20,6 +21,7 @@
 		92A58425B804181AEBD10863 /* Pods_TestMac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestMac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E11E12C8E93C93A0F0C25CF2 /* TestMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E11E14FA3D1BA73F0B19C73D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E11E17B7BDF54458D2277221 /* MacUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacUtils.swift; sourceTree = "<group>"; };
 		E11E181CEAEF36F5E1765B68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E11E19EBE50DB3A36211124C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E11E1CD0297A3FE55BEA4EBB /* TestMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestMac.entitlements; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				E11E181CEAEF36F5E1765B68 /* AppDelegate.swift */,
 				E11E1685BADB9612347DF9C8 /* Main.storyboard */,
 				E11E14FA3D1BA73F0B19C73D /* ViewController.swift */,
+				E11E17B7BDF54458D2277221 /* MacUtils.swift */,
 			);
 			path = TestMac;
 			sourceTree = "<group>";
@@ -197,6 +200,7 @@
 			files = (
 				E11E1623E634A58075D5FDC2 /* AppDelegate.swift in Sources */,
 				E11E1BF4B82C433C3F324936 /* ViewController.swift in Sources */,
+				E11E1E557C212941D06209C6 /* MacUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
