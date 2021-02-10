@@ -1,5 +1,7 @@
 use_frameworks!
 
+platform :osx, '10.15'
 target 'TestMac' do
   pod 'SwiftSweet', :path => '../'
+  # pod 'SwiftSweet'
 end
