@@ -10,7 +10,7 @@ let package = Package(
         .library(name: "SwiftSweet", targets: ["SwiftSweet"]),
     ],
     targets: [
-        .target(name: "SwiftSweet", path: "SwiftSweet/Classes/**/*")
+        .target(name: "SwiftSweet", path: "SwiftSweet/Classes/")
     ],
     swiftLanguageVersions: [
         .v5
