@@ -55,7 +55,7 @@ public extension NSObject {
 }
 
 
-extension NSObject {
+public extension NSObject {
 
 
     func watch(object: Any?, name: Notification.Name, target: Any, selector: Selector) {

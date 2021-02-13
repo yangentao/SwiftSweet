@@ -13,9 +13,8 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Hello")
         view.backgroundColor = .green
-        view.addView(UILabel(frame: .zero)) { lb in
+       let lb =  view.addView(UILabel(frame: .zero)) { lb in
             lb.constraints{ c in
                 c.centerParent().widthParent(constant: -20).heightRatio(multi: 1)
             }
@@ -24,6 +23,14 @@ class ViewController: UIViewController {
             lb.backgroundColor = .yellow
             lb.textColor = .red
         }
+        //(10000.0, 10000.0) (0.0, 0.0)
+        logd( UIView.layoutFittingExpandedSize, UIView.layoutFittingCompressedSize)
+        logd(lb.sizeThatFits(UIView.layoutFittingCompressedSize))
+        logd(lb.sizeThatFits(UIView.layoutFittingExpandedSize))
+        logd(lb.intrinsicContentSize)
+
+        lb.addObserver(self, forKeyPath: "intrinsicContentSize", options: [.new, .old], context: nil)
+
     }
 
 
