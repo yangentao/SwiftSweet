@@ -1,5 +1,5 @@
 PODS:
-  - SwiftSweet (0.1.2)
+  - SwiftSweet (0.1.5)
 
 DEPENDENCIES:
   - SwiftSweet (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  SwiftSweet: 5ab2d26821e99a40911615e47a27a70ac2070083
+  SwiftSweet: 4127ba65262d5ac276bf1fe42f5a988eaff78a0c
 
 PODFILE CHECKSUM: 25e4434024de1c2ee7109c7841aaa0891e3e294a
 

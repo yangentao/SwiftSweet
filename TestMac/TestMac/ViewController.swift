@@ -19,10 +19,10 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let styleText = styledText {
-            $0.append("a", .foregroundColor, Color.blue)
-            $0.append("b", .backgroundColor, Color.white)
-        }
+//        let styleText = styledText {
+//            $0.append("a", .foregroundColor, Color.blue)
+//            $0.append("b", .backgroundColor, Color.white)
+//        }
 
 
         func label(_ n: Int) -> NSTextField {
