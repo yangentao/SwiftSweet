@@ -424,10 +424,8 @@ public class LinearLayout: BaseLayout {
     }
 
     private func layoutChildrenHor(_ cells: [LinearCell]) {
-        logd("HOR: ", bounds)
         for cell in cells {
             let rect = cell.rect
-            logd("Cell: ", rect, rect.minX, rect.maxX)
             let p = cell.param
             var gX = p.gravityX
             if gX == .none {
@@ -596,11 +594,6 @@ public class LinearLayout: BaseLayout {
     }
 
     private func calcCellRectVer(_ cells: [LinearCell]) -> CGFloat {
-        logd("Bounds.Height: ", self.bounds.height)
-        for c in cells {
-            logd("Height: ", c.height)
-        }
-
 
         let X = bounds.minX + padding.left
         let W = bounds.width - padding.left - padding.right
