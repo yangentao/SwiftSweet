@@ -19,7 +19,25 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        textWrap()
 
+//        let lb = NSTextField(labelWithString: "HaHa").constraints{ c in
+//            c.centerParent()
+//            c.width(38)
+//            c.height(16)
+//        }.apply { v in
+//            logd(v.fittingSize)
+//        }
+//        view += lb
+//        Task.foreDelay(seconds: 2) {
+//            logd(lb.fittingSize,  lb.frame, lb.sizeThatFits(.zero))
+//        }
+//
+//        print(lb.sizeThatFits(.zero))
+
+    }
+
+    func textWrap() {
         view += LinearLayout(.horizontal).constraints { c in
             c.centerParent()
             c.widthParent(multi: 1, constant: -10)
@@ -28,8 +46,9 @@ class ViewController: NSViewController {
 //            ll.backColor(.green)
         }.buildViews {
             NSTextField(labelWithString: "HaHa").linearParams { p in
-                p.weight = 1
-                p.width = MatchParent
+                p.sizeWrap()
+//                p.weight = 1
+//                p.width = MatchParent
                 p.gravityX = .center
                 p.gravityY = .center
             }.apply { v in
@@ -38,7 +57,6 @@ class ViewController: NSViewController {
                 v.alignment = .center
             }
         }
-
     }
 
 

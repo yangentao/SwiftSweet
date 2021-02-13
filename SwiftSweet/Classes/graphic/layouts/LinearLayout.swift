@@ -155,7 +155,6 @@ public extension LinearParams {
         return self
     }
 
-    #if os(iOS)
     @discardableResult
     func widthWrap() -> Self {
         self.width = WrapContent
@@ -174,7 +173,6 @@ public extension LinearParams {
         self.height = WrapContent
         return self
     }
-    #endif
 
     @discardableResult
     func heightFill() -> Self {
@@ -284,6 +282,7 @@ public class LinearLayout: BaseLayout {
         return total
     }
 
+
     override func layoutChildren() {
 
         let viewList = self.subviews.filter {
@@ -314,13 +313,12 @@ public class LinearLayout: BaseLayout {
     }
 
     private func calcSizesHor(_ size: CGSize, _ cells: [LinearCell]) {
-        #if os(iOS)
         for cell in cells {
             if cell.param.width == WrapContent || cell.param.height == WrapContent {
                 cell.wrapSize = cell.view.fitSize(size)
+                logd("WrapSize: ", cell.wrapSize)
             }
         }
-        #endif
         var avaliableWidth = size.width
         var weightSum: CGFloat = 0
         var matchSum = 0
@@ -352,13 +350,11 @@ public class LinearLayout: BaseLayout {
                 avaliableWidth -= cell.width
                 continue
             }
-            #if os(iOS)
             if cell.param.width == WrapContent {
                 cell.width = cell.wrapSize.width
                 avaliableWidth -= cell.width
                 continue
             }
-            #endif
 
             fatalError("LinearParam.height < 0 ")
         }
@@ -448,11 +444,9 @@ public class LinearLayout: BaseLayout {
                 if p.height == MatchParent {
                     h = rect.height
                 } else {
-                    #if os(iOS)
                     if p.height == WrapContent {
                         h = cell.wrapSize.height
                     }
-                    #endif
                 }
             }
 
@@ -474,11 +468,9 @@ public class LinearLayout: BaseLayout {
                 if p.width == MatchParent {
                     w = rect.width
                 } else {
-                    #if os(iOS)
                     if p.width == WrapContent {
                         w = cell.wrapSize.width
                     }
-                    #endif
                 }
             }
 
@@ -502,13 +494,11 @@ public class LinearLayout: BaseLayout {
     //=========
 
     private func calcSizesVertical(_ size: CGSize, _ cells: [LinearCell]) {
-        #if os(iOS)
         for cell in cells {
             if cell.param.width == WrapContent || cell.param.height == WrapContent {
                 cell.wrapSize = cell.view.fitSize(size)
             }
         }
-        #endif
 
         var avaliableHeight = size.height
         var weightSum: CGFloat = 0
@@ -541,13 +531,11 @@ public class LinearLayout: BaseLayout {
                 avaliableHeight -= cell.height
                 continue
             }
-            #if os(iOS)
             if cell.param.height == WrapContent {
                 cell.height = cell.wrapSize.height
                 avaliableHeight -= cell.height
                 continue
             }
-            #endif
 
             fatalError("LinearParam.height < 0 ")
         }
@@ -638,11 +626,9 @@ public class LinearLayout: BaseLayout {
                 if p.width == MatchParent {
                     w = rect.width
                 } else {
-                    #if os(iOS)
                     if p.width == WrapContent {
                         w = cell.wrapSize.width
                     }
-                    #endif
                 }
             }
 
@@ -663,11 +649,9 @@ public class LinearLayout: BaseLayout {
                 if p.height == MatchParent {
                     h = rect.height
                 } else {
-                    #if os(iOS)
                     if p.height == WrapContent {
                         h = cell.wrapSize.height
                     }
-                    #endif
                 }
             }
 

@@ -45,6 +45,9 @@ extension View {
         #if os(iOS)
         return sizeThatFits(size)
         #else
+        if let c = self as? NSControl {
+            return c.sizeThatFits(size)
+        }
         return fittingSize
         #endif
     }
