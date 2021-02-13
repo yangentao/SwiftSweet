@@ -80,6 +80,12 @@ public extension Collection {
 }
 
 public extension Array {
+    mutating func popFirst() -> Element? {
+        if self.isEmpty {
+            return nil
+        }
+        return self.remove(at: 0)
+    }
 
     func first(_ block: (Element) -> Bool) -> Element? {
         for e in self {

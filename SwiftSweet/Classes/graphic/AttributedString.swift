@@ -18,6 +18,13 @@ public func styledText(_ block: (StyledText) -> Void) -> NSAttributedString {
     return a.value
 }
 
+public func styledText(_ text: String, _ block: (TextStyleBuilder) -> Void) -> NSAttributedString {
+    let a = StyledText()
+    let b = a.append(text)
+    block(b)
+    return a.value
+}
+
 public func styledText(text: String, key: NSAttributedString.Key, value: Any) -> NSAttributedString {
     let ss = NSMutableAttributedString(string: text)
     ss.setAttributes([key: value], range: NSRange(location: 0, length: text.count))
@@ -140,6 +147,14 @@ public extension TextStyleBuilder {
     @discardableResult
     func keyValue(_ key: NSAttributedString.Key, _ value: Any) -> Self {
         map.map[key] = value
+        return self
+    }
+
+    @discardableResult
+    func paragraphStyle(_ block: (ParagraphBuilder) -> Void) -> Self {
+        let b = ParagraphBuilder()
+        block(b)
+        map.map[.paragraphStyle] = b.paragraph
         return self
     }
 

@@ -20,6 +20,8 @@ public typealias EdgeInsets = UIEdgeInsets
 public typealias XViewController = UIViewController
 public typealias XScrollView = UIScrollView
 public typealias XScreen = UIScreen
+public typealias XImageView = UIImageView
+public typealias XImage = UIImage
 #else
 public typealias Color = NSColor
 public typealias Font = NSFont
@@ -30,6 +32,8 @@ public typealias EdgeInsets = NSEdgeInsets
 public typealias XViewController = NSViewController
 public typealias XScrollView = NSScrollView
 public typealias XScreen = NSScreen
+public typealias XImageView = NSImageView
+public typealias XImage = NSImage
 #endif
 
 public typealias LayoutRelation = NSLayoutConstraint.Relation
