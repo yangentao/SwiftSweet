@@ -47,7 +47,7 @@ class ViewController: NSViewController {
         }.buildViews {
             NSTextField(labelWithString: "HaHa").linearParams { p in
                 p.sizeWrap()
-//                p.weight = 1
+                p.weight = 1
 //                p.width = MatchParent
                 p.gravityX = .center
                 p.gravityY = .center
